@@ -554,6 +554,45 @@ app.get("/requests", async (req, res) => {
   }
 });
 
+
+app.get("/requests/:customer_id", async (req, res) => {
+  try {
+    const {customer_id} = req.params;
+    console.log(customer_id);
+    const requests = await Request.findAll(
+      {
+        where: {customer_id: customer_id},
+      include: [
+        {
+          model: Service,
+          attributes: ["service_name"], // Include service name from the Service table
+        },
+      ],
+      attributes: ["plan", "features", "service_id","status"],
+  });
+
+  if (!requests || requests.length === 0) {
+    return res.status(404).json({ Error: "No requests found" });
+  }
+
+  // Map over the requests to structure the response data
+  const responseData = requests.map(request => ({
+    customer_id: customer_id,
+    service_id: request.service_id,
+    service_name: request.Service ? request.Service.service_name : null, // Get service_name from the related Service model
+    plan: request.plan,
+    features: request.features,
+    status: request.status
+  }));
+
+    console.log(requests);
+    return res.json(responseData);
+  } catch (err) {
+    console.error("Error fetching requests:", err);
+    return res.status(500).json({ Error: "Error fetching requests" });
+  }
+});
+
 app.delete("/customer/:id", verifyUser, verifyAdmin, async (req, res) => {
   try {
     const { id } = req.params;

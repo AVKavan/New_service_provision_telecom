@@ -11,7 +11,10 @@ import {
   Button,
   ErrorMessage,
   LoginPrompt,
-  AuthContainer
+  AuthContainer,
+  RequestList,
+  RequestItem,
+  ServiceContainer
 } from "./StyledComponent";
 import logo from "../../Assets/logo.jpg"; // Adjust the path as per your directory structure
 
@@ -20,6 +23,7 @@ const LandingPage = () => {
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [customerDetails, setCustomerDetails] = useState(null);
+  const [requests, setRequests] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,6 +61,17 @@ const LandingPage = () => {
         }
       })
       .catch((err) => console.log(err));
+
+      axios.get(`http://localhost:8081/requests/${customer_id}`)
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setRequests(res.data);
+        } else {
+          console.error("Expected an array, but got:", res.data);
+          setRequests(["No pending requets found"]);
+        }
+      })
+      .catch(err => console.error("Error fetching service requests:", err));
   }, [customer_id]);
 
   const handleLogout = () => {
@@ -93,6 +108,7 @@ const LandingPage = () => {
         
           <WelcomeMessage>Welcome, {name}</WelcomeMessage>
           <Button onClick={handleLogout}>Logout</Button>
+          <ServiceContainer>
           {customerDetails ? (
             <ServiceList>
               <h4>Your Services</h4>
@@ -113,6 +129,26 @@ const LandingPage = () => {
           ) : (
             <p>Loading customer details...</p>
           )}
+          {requests ? (
+            <RequestList>
+              <h4>Your Requests</h4>
+              {Array.isArray(requests) && requests.length > 0 ? (
+                requests.map(request => (
+                  <RequestItem key={request.id}>
+                    <h5>{request.service_name}</h5>
+                    <p>Plan: {request.plan}</p>{" "}
+                  
+                    <p>Status: {request.status}</p>
+                  </RequestItem>
+                ))
+              ) : (
+                <p>No services enrolled.</p>
+              )}
+            </RequestList>
+          ) : (
+            <p>Loading customer details...</p>
+          )}
+          </ServiceContainer>
           <Button onClick={handleEnrollService}>Enroll in a Service</Button>
           <Button onClick={handleConfigureService}>Configure Services</Button>
           <Button onClick={handleTerminateService}>Terminate a Service</Button>

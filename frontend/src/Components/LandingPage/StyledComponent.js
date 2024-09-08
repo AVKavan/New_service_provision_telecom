@@ -8,7 +8,21 @@ export const AuthContainer = styled.div`
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
+`;
+
+
+export const ServiceContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  // align-items: center;
+  justify-content: space-evenly;
+  background-image: url('./bg_image.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
   padding: 20px;
 `;
 
@@ -31,9 +45,10 @@ export const WelcomeMessage = styled.h1`
 
 // Service list container
 export const ServiceList = styled.div`
-  width: 100%;
+  width: 50%;
   max-width: 800px;
-  margin: 20px 0;
+  height: fit-content;
+  margin: 20px ;
   padding: 20px;
       background: rgba(17, 25, 40, 0.7);
 
@@ -41,6 +56,18 @@ export const ServiceList = styled.div`
   color: #fff;
 `;
 
+
+export const RequestList = styled.div`
+  width: 50%;
+  height: fit-content;
+  max-width: 800px;
+  margin: 20px ;
+  padding: 20px;
+      background: rgba(17, 25, 40, 0.7);
+
+  border-radius: 8px;
+  color: #fff;
+`;
 // Service item
 export const ServiceItem = styled.div`
   background: rgba(0, 0, 0, 0.8);
@@ -58,6 +85,30 @@ export const ServiceItem = styled.div`
     margin: 5px 0;
   }
 `;
+
+
+
+
+
+export const RequestItem = styled.div`
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  
+  h5 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+`;
+
+
+
 
 // Buttons
 export const Button = styled.button`

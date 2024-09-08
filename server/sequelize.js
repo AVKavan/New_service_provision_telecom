@@ -1,7 +1,7 @@
 // sequelize.js
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('sps', 'root', 'Itone@123', {
+const sequelize = new Sequelize('sps', 'root', '12345', {
     host: 'localhost',
     dialect: 'mysql'
 });
